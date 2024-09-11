@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=https://json.schemastore.org/taskfile.json
+---
+version: "3"
+
+tasks:
+  default:
+    desc: Show help
+    aliases: [h]
+    silent: true
+    cmds:
+      - task -l --sort alphanumeric
+
+  clean:
+    silent: true
+    cmds:
+      - rm -rf .task
+      - rm -rf .wrangler
+
+  install:
+    desc: Install dependencies
+    aliases: [i]
+    run: once
+    cmds:
+      - pnpm install
+    preconditions:
+      - test -f package.json
+    sources:
+      - package.json
+      - pnpm-lock.yaml
+    status:
+      - test -d node_modules
+
+  lint:
+    desc: Lint the code
+    aliases: [l]
+    run: once
+    sources:
+      - src/**/*
+      - biome.json
+    cmds:
+      - pnpm dlx @biomejs/biome check --write ./src
+
+  test:
+    desc: Run tests
+    run: once
+    cmds:
+      - pnpm --silent exec vitest run
+
+  checks:
+    desc: Run checks
+    run: once
+    cmds:
+      - pnpm --silent wrangler types
+      - task: lint
+      - task: test
+
+  ci:
+    desc: Build and deploy
+    cmds:
+      - task: install
+      - task: checks
+      - pnpm --silent exec wrangler deploy
+      
