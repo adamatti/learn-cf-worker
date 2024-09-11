@@ -5,7 +5,7 @@ Actions
 - Removed `editorconfig`/`prettier`, added [biome](https://biomejs.dev/)
 - Added [taskfile](https://taskfile.dev/), remove scripts from `package.json`
 - Using [mise](https://github.com/jdx/mise) for versions
-- Using [https://github.com/honojs/hono](Hono)
+- Using [Hono](https://github.com/honojs/hono)
 
 # References
 
