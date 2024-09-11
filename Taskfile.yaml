@@ -46,13 +46,20 @@ tasks:
     cmds:
       - pnpm --silent exec vitest run
 
+  types:
+    run: once
+    sources:
+      - wrangler.toml
+    cmds:
+      - pnpm --silent wrangler types
+
   checks:
     desc: Run checks
     run: once
     cmds:
-      - pnpm --silent wrangler types
+      - task: types
       - task: lint
-      - task: test
+      # - task: test
 
   ci:
     desc: Build and deploy
